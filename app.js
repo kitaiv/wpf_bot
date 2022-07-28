@@ -1,11 +1,9 @@
 const TelegramBot = require("node-telegram-bot-api");
-const tkn = require("./bot_config");
 const wallpaperCategory = require("./categories");
 const axios = require("axios");
 require("./server");
-const token = tkn.token;
 
-const bot = new TelegramBot(token, { polling: true });
+const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true });
 
 let counter = 0;
 let picList = [];
@@ -62,9 +60,7 @@ const controler = {
         { text: "⬅️", callback_data: "_back" },
         { text: "➡️", callback_data: "_next" }
       ],
-      [
-        { text: "Convert to file", callback_data: "convert_to_file" },
-      ]
+      [{ text: "Convert to file", callback_data: "convert_to_file" }]
     ]
   })
 };
@@ -91,8 +87,8 @@ const handleControlMedia = (chatId, msgId, type) => {
   // if (getPicId === 0 || !getPicId) return false;
   try {
     if (type === "_next") {
-      if(counter === picList.length - 1) counter = 0;
-      if(counter !== picList.length - 1) counter++;
+      if (counter === picList.length - 1) counter = 0;
+      if (counter !== picList.length - 1) counter++;
       return bot.editMessageMedia(
         JSON.stringify({ type: "photo", media: picList[counter] }),
         { chat_id: chatId, message_id: msgId, ...controler }
@@ -100,8 +96,8 @@ const handleControlMedia = (chatId, msgId, type) => {
     }
 
     if (type === "_back") {
-      if(counter === 0) counter = picList.length - 1;
-      if(counter !== 0) counter--;
+      if (counter === 0) counter = picList.length - 1;
+      if (counter !== 0) counter--;
       return bot.editMessageMedia(
         JSON.stringify({ type: "photo", media: picList[counter] }),
         { chat_id: chatId, message_id: msgId, ...controler }
@@ -128,9 +124,11 @@ const getPicByCategory = (chatId, category) => {
 };
 
 const handleConvertToFile = (chatId) => {
-  const picUrl = picList[counter]
-  return bot.sendDocument(chatId, picUrl, {allow_sending_without_reply: false})
-}
+  const picUrl = picList[counter];
+  return bot.sendDocument(chatId, picUrl, {
+    allow_sending_without_reply: false
+  });
+};
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
@@ -184,9 +182,12 @@ bot.on("callback_query", async (query) => {
       try {
         // bot.getFile(picList[0]).then(async (data) => console.log(data));
         await handleConvertToFile(chatId);
-      }catch(error){
+      } catch (error) {
         console.log(error);
       }
+      break;
+    case "show_categories":
+      await showCategories(chatId, messageId, "update_message");
       break;
     case "_back":
       try {
@@ -205,11 +206,4 @@ bot.on("callback_query", async (query) => {
     default:
       break;
   }
-
-  if (query.data === "show_categories")
-    return await showCategories(
-      chatId,
-      query.message.message_id,
-      "update_message"
-    );
 });
