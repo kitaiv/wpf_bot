@@ -117,7 +117,7 @@ const handleControlMedia = (chatId, msgId, type) => {
 
 const getPicByCategory = (chatId, category) => {
   axios
-    .get(`http://localhost:8080/api/get?category=${category}`)
+    .get(`https://wpfn-bot.herokuapp.com/api/get?category=${category}`)
     .then((res) => {
       res.data.forEach((pic) => picList.push(pic.url));
       bot.sendPhoto(chatId, picList[0], controler);

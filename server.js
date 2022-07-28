@@ -8,7 +8,7 @@ const CONNECTION_URL = 'mongodb+srv://root:root@wpfn-db.cap5z.mongodb.net/?retry
 const app = express();
 
 const corsOptions = {
-    origin: "http://localhost:8080"
+    origin: "https://wpfn-bot.herokuapp.com"
 };
 
 app.use(cors(corsOptions));
