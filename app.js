@@ -105,7 +105,7 @@ const handleControlMedia = (chatId, msgId, type) => {
     }
 
     if (type === "_start") counter = 0;
-    return bot.sendPhoto(chatId, picList[counter], controler);
+    return bot.sendPhoto(chatId, picList[counter], controler, {protect_content: true});
   } catch (e) {
     console.log(e);
   }
@@ -116,7 +116,7 @@ const getPicByCategory = (chatId, category) => {
     .get(`https://wpfn-bot.herokuapp.com/api/get?category=${category}`)
     .then((res) => {
       res.data.forEach((pic) => picList.push(pic.url));
-      bot.sendPhoto(chatId, picList[0], controler);
+      bot.sendPhoto(chatId, picList[0], controler, {protect_content: true});
     })
     .catch((err) => {
       console.log("Error: ", err.message);
