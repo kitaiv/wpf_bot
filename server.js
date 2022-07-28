@@ -3,12 +3,11 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 let MongoClient = require('mongodb').MongoClient;
 const DATABASE_NAME = "wpfn-pics";
-const CONNECTION_URL = 'mongodb+srv://root:root@wpfn-db.cap5z.mongodb.net/?retryWrites=true&w=majority';
 
 const app = express();
 
 const corsOptions = {
-    origin: "https://wpfn-bot.herokuapp.com"
+    origin: "https://wpfn-bot.herokuapp.com" || "http://localhost:8080",
 };
 
 app.use(cors(corsOptions));
@@ -42,7 +41,7 @@ let database, collection;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) => {
+    MongoClient.connect(proccess.end.DB_URL, { useNewUrlParser: true }, (error, client) => {
         if(error) {
             throw error;
         }
