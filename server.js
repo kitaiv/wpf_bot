@@ -41,7 +41,7 @@ let database, collection;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    MongoClient.connect(proccess.env.DB_URL, { useNewUrlParser: true }, (error, client) => {
+    MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }, (error, client) => {
         if(error) {
             throw error;
         }
