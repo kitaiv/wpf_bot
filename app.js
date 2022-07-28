@@ -129,7 +129,7 @@ const getPicByCategory = (chatId, category) => {
 
 const handleConvertToFile = (chatId) => {
   const picUrl = picList[counter]
-  return bot.sendDocument(chatId, picUrl, {protect_content: true, allow_sending_without_reply: false})
+  return bot.sendDocument(chatId, picUrl, {allow_sending_without_reply: false})
 }
 
 bot.on("message", async (msg) => {
