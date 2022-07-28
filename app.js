@@ -115,7 +115,10 @@ const getPicByCategory = (chatId, category) => {
   axios
     .get(`https://wpfn-bot.herokuapp.com/api/get?category=${category}`)
     .then((res) => {
-      res.data.forEach((pic) => picList.push(pic.url));
+      res.data.forEach((pic) => {
+        picList.push(pic.url)
+        picList.reverse();
+      });
       bot.sendPhoto(chatId, picList[0], controler, {protect_content: true});
     })
     .catch((err) => {
