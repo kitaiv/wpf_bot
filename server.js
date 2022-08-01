@@ -7,7 +7,7 @@ const DATABASE_NAME = "wpfn-pics";
 const app = express();
 
 const corsOptions = {
-    origin: "https://wpfn-bot.herokuapp.com" || "http://localhost:8080",
+    origin: "http://localhost:8080",
 };
 
 app.use(cors(corsOptions));
@@ -41,7 +41,7 @@ let database, collection;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
-    MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }, (error, client) => {
+    MongoClient.connect('mongodb+srv://root:root@wpfn-db.cap5z.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true }, (error, client) => {
         if(error) {
             throw error;
         }

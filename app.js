@@ -88,7 +88,7 @@ const handleControlMedia = (chatId, msgId, type) => {
   try {
     if (type === "_next") {
       if (counter === picList.length - 1) counter = 0;
-      if (counter !== picList.length - 1) counter++;
+      if (counter !== picList.length - 1) ++counter;
       return bot.editMessageMedia(
         JSON.stringify({ type: "photo", media: picList[counter] }),
         { chat_id: chatId, message_id: msgId, ...controler }
@@ -97,7 +97,7 @@ const handleControlMedia = (chatId, msgId, type) => {
 
     if (type === "_back") {
       if (counter === 0) counter = picList.length - 1;
-      if (counter !== 0) counter--;
+      if (counter !== 0) --counter;
       return bot.editMessageMedia(
         JSON.stringify({ type: "photo", media: picList[counter] }),
         { chat_id: chatId, message_id: msgId, ...controler }
@@ -133,12 +133,32 @@ const handleConvertToFile = (chatId) => {
   });
 };
 
+const handleAddUser = (data) => {
+  const config = {
+    method: "post",
+    url: "https://wpfn-bot.herokuapp.com/api/store",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    data: JSON.stringify(data)
+  };
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+};
+
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
   const command = msg.text;
   const messageId = msg.message_id;
   switch (command) {
     case "/start":
+      await handleAddUser(msg)
       await bot.sendMessage(
         chatId,
         "Hello, I am a wallpaper bot!",
