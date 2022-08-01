@@ -7,7 +7,7 @@ const DATABASE_NAME = "wpfn-pics";
 const app = express();
 
 const corsOptions = {
-    origin: "http://localhost:8080",
+    origin: "https://wpfn-bot.herokuapp.com",
 };
 
 app.use(cors(corsOptions));
