@@ -160,6 +160,7 @@ bot.on("callback_query", async (query) => {
   const chatId = query.message.chat.id;
   const messageId = query.message.message_id;
   const { data } = query;
+  console.log("chatId >>> ", chatId)
   switch (data) {
     case wallpaperCategory.nature:
       counter = 0;
