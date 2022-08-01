@@ -64,3 +64,38 @@ app.get("/api/get", (req, res) => {
         res.json({error: e.toString()})
     }
 });
+
+app.post("/api/store", (req, res) => {
+    collection = database.collection("Users");
+    const {body} = req;
+    const {from, chat} = body;
+    const data = {
+        first_name: from.first_name ?? "",
+        last_name: from.last_name ?? "",
+        username: from.username ?? "",
+        language_code: from.language_code ?? null,
+        chat_id: chat.id,
+        date: body.date
+    }
+    collection.find({chat_id: chat.id}, {})
+        .toArray()
+        .then(items => {
+            const checkExistUser = items.find(el => el.chat_id === chat.id)
+            if(checkExistUser !== undefined){
+                res.json({
+                    message: 'Error: There is already a user with this chat id!',
+                    result: false
+                })
+            }else{
+                collection.insertOne(data, (error, result) => {
+                    if(error) return res.status(500).send(error)
+                    res.json({
+                        message: 'Successfully added user',
+                        result: true
+                    })
+                });
+            }
+        })
+        .catch(err => res.json({result: err}))
+
+});
